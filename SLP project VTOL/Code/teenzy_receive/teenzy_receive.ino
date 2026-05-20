@@ -1,7 +1,8 @@
 #include "sbus.h"
+int LED = 13;
 
 /* SBUS object on Serial2 (Pin 7) */
-bfs::SbusRx sbus_rx(&Serial2);
+bfs::SbusRx sbus_rx(&Serial);
 bfs::SbusData data;
 
 void setup() {
@@ -18,13 +19,16 @@ void loop() {
   if (sbus_rx.Read()) {
     data = sbus_rx.data();
 
-    for (int i = 0; i < 8; i++) {
-      Serial.print("Ch");
-      Serial.print(i + 1);
-      Serial.print(": ");
-      Serial.print(data.ch[i]); // Values range 172 - 1811
-      Serial.print("\t");
-    }
-    Serial.println();
+  int throttle = data[2];
+  if (throttle > 992){
+    
+  digitalWrite(LED,HIGH);
+    
+  }
+  else{
+    
+  digitalWrite(LED,LOW);
+  }
+
   }
 }
